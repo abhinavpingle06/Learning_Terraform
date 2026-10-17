@@ -7,13 +7,19 @@ terraform {
   }
 }
 
+variable "region" {
+  description = "This Holds the region value"
+  type = string
+  default = "ap-south-1"
+}
+
 provider "aws" {
-  region = "ap-south-1"
+  region = var.region
 }
 
 resource "aws_instance" "myServer" {
   ami = "ami-01a00762f46d584a1"
-  instance_type = "t3.nano"
+  instance_type = var.ec2_type
   tags = {
     Name = "MyServer"
   }
