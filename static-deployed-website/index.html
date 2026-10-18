@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terraform Backend Explorer</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+    <header class="hero">
+        <span class="tag">TERRAFORM GUIDE</span>
+        <h1>Terraform Backend Explorer</h1>
+        <p>Understand where Terraform stores its infrastructure state.</p>
+    </header>
+
+    <main class="container">
+
+        <section class="intro">
+            <h2>What is a Backend?</h2>
+            <p>
+                A Terraform backend determines where Terraform stores its
+                state file. This file tracks resources managed by Terraform,
+                including EC2 instances, ECR repositories, and security groups.
+            </p>
+        </section>
+
+        <section class="backend-section">
+            <h2>Available Backend Options</h2>
+            <p class="subtitle">Explore the 11 backend types.</p>
+
+            <div class="backend-grid">
+
+                <article class="backend-card">
+                    <div class="icon">☁️</div>
+                    <h3>AzureRM</h3>
+                    <span class="category">Microsoft Azure</span>
+                    <p>Stores Terraform state in Azure Blob Storage.</p>
+                    <code>backend "azurerm"</code>
+                </article>
+
+                <article class="backend-card">
+                    <div class="icon">🔗</div>
+                    <h3>Consul</h3>
+                    <span class="category">HashiCorp</span>
+                    <p>Stores state in a Consul key-value store.</p>
+                    <code>backend "consul"</code>
+                </article>
+
+                <article class="backend-card">
+                    <div class="icon">☁️</div>
+                    <h3>COS</h3>
+                    <span class="category">Tencent Cloud</span>
+                    <p>Uses Tencent Cloud Object Storage.</p>
+                    <code>backend "cos"</code>
+                </article>
+
+                <article class="backend-card">
+                    <div class="icon">🌐</div>
+                    <h3>GCS</h3>
+                    <span class="category">Google Cloud</span>
+                    <p>Stores state in Google Cloud Storage buckets.</p>
+                    <code>backend "gcs"</code>
+                </article>
+
+                <article class="backend-card">
+                    <div class="icon">🔌</div>
+                    <h3>HTTP</h3>
+                    <span class="category">HTTP API</span>
+                    <p>Uses HTTP endpoints to read and write state.</p>
+                    <code>backend "http"</code>
+                </article>
+
+                <article class="backend-card">
+                    <div class="icon">⎈</div>
+                    <h3>Kubernetes</h3>
+                    <span class="category">Container Platform</span>
+                    <p>Stores state in a Kubernetes Secret.</p>
+                    <code>backend "kubernetes"</code>
+                </article>
+
+                <article class="backend-card">
+                    <div class="icon">💻</div>
+                    <h3>Local</h3>
+                    <span class="category">Local Filesystem</span>
+                    <p>Stores state in a local terraform.tfstate file.</p>
+                    <code>backend "local"</code>
+                </article>
+
+                <article class="backend-card">
+                    <div class="icon">📦</div>
+                    <h3>OSS</h3>
+                    <span class="category">Alibaba Cloud</span>
+                    <p>Stores state in Alibaba Cloud Object Storage.</p>
+                    <code>backend "oss"</code>
+                </article>
+
+                <article class="backend-card">
+                    <div class="icon">🗄️</div>
+                    <h3>PostgreSQL</h3>
+                    <span class="category">Database</span>
+                    <p>Stores state in a PostgreSQL database.</p>
+                    <code>backend "pg"</code>
+                </article>
+
+                <article class="backend-card">
+                    <div class="icon">🔄</div>
+                    <h3>Remote</h3>
+                    <span class="category">HCP Terraform</span>
+                    <p>Connects Terraform to remote workspaces.</p>
+                    <code>backend "remote"</code>
+                </article>
+
+                <article class="backend-card recommended">
+                    <div class="icon">🟠</div>
+                    <h3>Amazon S3</h3>
+                    <span class="category">AWS • Recommended</span>
+                    <p>Stores shared state in S3 with optional state locking.</p>
+                    <code>backend "s3"</code>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="example">
+            <h2>Recommended for AWS CI/CD</h2>
+            <p>
+                For a Jenkins pipeline deploying Docker images from ECR
+                to EC2, an S3 backend provides centralized Terraform state.
+            </p>
+
+            <pre><code>terraform {
+  backend "s3" {
+    bucket       = "your-state-bucket"
+    key          = "jenkins/terraform.tfstate"
+    region       = "ap-south-1"
+    encrypt      = true
+    use_lockfile = true
+  }
+}</code></pre>
+
+            <p class="note">
+                Note: Create the bucket first. Enable bucket versioning,
+                block public access, and configure IAM permissions.
+                Use a Terraform CLI version that supports S3 lockfiles.
+            </p>
+        </section>
+
+        <footer>
+            <p>Terraform Backend Explorer · Learn Infrastructure as Code</p>
+        </footer>
+
+    </main>
+
+</body>
+
+</html>
