@@ -14,14 +14,14 @@ terraform {
 locals {
   website_files = {
     "index.html" = "./index.html"
-    "index.css" = "./index.css"
+    "index.css"  = "./index.css"
   }
 }
 
 variable "region" {
   description = "This Holds the region value"
-  type = string
-  default = "ap-south-1"
+  type        = string
+  default     = "ap-south-1"
 }
 
 provider "aws" {
@@ -33,15 +33,15 @@ resource "random_id" "id_generator" {
 }
 
 resource "aws_s3_bucket" "static_website" {
-    bucket = "static-website-tf-${random_id.id_generator.hex}"
+  bucket = "static-website-tf-${random_id.id_generator.hex}"
 }
 
 resource "aws_s3_object" "static_website_files" {
-  bucket = aws_s3_bucket.static_website.id
-  for_each = local.website_files
-  source = each.value
-  key = each.key
-  etag = filemd5(each.value) #Detects any change in the vlaue files and updates it
+  bucket       = aws_s3_bucket.static_website.id
+  for_each     = local.website_files
+  source       = each.value
+  key          = each.key
+  etag         = filemd5(each.value) #Detects any change in the vlaue files and updates it
   content_type = endswith(each.key, ".html") ? "text/html" : "text/css"
 }
 
@@ -55,20 +55,20 @@ resource "aws_s3_bucket_public_access_block" "blocking_perms" {
 }
 
 resource "aws_s3_bucket_policy" "policy_perms" {
-    bucket = aws_s3_bucket.static_website.id
-    policy = jsonencode({
+  bucket = aws_s3_bucket.static_website.id
+  policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
-        {
-            Sid = "PublicReadGetObject",
-            Effect = "Allow",
-            Principal = "*",
-            Action = "s3:GetObject",
-            Resource = "arn:aws:s3:::${aws_s3_bucket.static_website.id}/*"
-        }
+      {
+        Sid       = "PublicReadGetObject",
+        Effect    = "Allow",
+        Principal = "*",
+        Action    = "s3:GetObject",
+        Resource  = "arn:aws:s3:::${aws_s3_bucket.static_website.id}/*"
+      }
     ]
-})
-  
+  })
+
 }
 
 resource "aws_s3_bucket_website_configuration" "file_config" {
@@ -86,8 +86,8 @@ output "bucket_info" {
 
 output "object_info" {
   value = {
-    for key, obj in aws_s3_object.static_website_files : 
-        key => obj.id
+    for key, obj in aws_s3_object.static_website_files :
+    key => obj.id
   }
 }
 
